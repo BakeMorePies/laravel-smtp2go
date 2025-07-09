@@ -21,7 +21,7 @@ class Smtp2GoTransport extends AbstractTransport
 
     protected string $endpoint = 'https://api.smtp2go.com/v3/email/send';
 
-    public function __construct(EventDispatcherInterface $dispatcher = null, LoggerInterface $logger = null)
+    public function __construct(?EventDispatcherInterface $dispatcher = null, ?LoggerInterface $logger = null)
     {
         parent::__construct($dispatcher, $logger);
 
@@ -61,7 +61,10 @@ class Smtp2GoTransport extends AbstractTransport
             ])->all(),
         ])->filter()->all();
 
-        $response = Http::timeout(60)->post($this->endpoint, $data);
+        // Use Http client with SSL verification disabled to fix certificate issues
+        $response = Http::timeout(60)
+            ->withoutVerifying() // Disable SSL verification
+            ->post($this->endpoint, $data);
 
         if (!$response->successful() || $response->json('data.succeeded') < 1) {
             throw Smtp2GoException::make('Failed to send via ' . $this . ' transport', $response->status())

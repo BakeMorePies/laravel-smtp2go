@@ -5,7 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/motomedialab/smtp2go/code-style.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/motomedialab/smtp2go/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/motomedialab/smtp2go.svg?style=flat-square)](https://packagist.org/packages/motomedialab/smtp2go)
 
-Integrate SMTP2Go directly into your application using SMTP2Go's API
+Integrate SMTP2Go directly into your application using SMTP2Go's API with automatic dynamic email address generation and SSL certificate handling.
 
 ### Installation
 
@@ -31,6 +31,20 @@ You only need to grant this API Key Emails `/emails/send` API access.
 SMTP2GO_API_KEY=XXXXXXXX
 ```
 
+### Dynamic Email Address Generation
+
+This package automatically generates the `MAIL_FROM_ADDRESS` based on your `APP_URL` subdomain:
+
+- **Local development**: `https://myapp.local` → `myapp@bmpweb.dev`
+- **Production**: `https://myapp.bmpweb.dev` → `myapp@bmpweb.dev`
+- **Fallback**: If no valid subdomain is found → `noreply@bmpweb.dev`
+
+The dynamic email address is automatically set when the package boots, so you don't need to configure `MAIL_FROM_ADDRESS` in your `.env` file.
+
+### SSL Certificate Handling
+
+This package includes automatic SSL certificate handling to prevent common SSL verification issues that can occur in development environments.
+
 ### Usage
 
 To use this as the main driver, i.e. all email will be routed via SMTP2Go by default, set
@@ -45,6 +59,5 @@ If you want to use it on a case by case basis, you can call the driver directly,
 ```php
 Mail::driver('smtp2go')->send(...)
 ```
-
 
 That's it, you're good to go!
