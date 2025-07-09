@@ -1,5 +1,5 @@
 {
-    "name": "motomedialab/smtp2go",
+    "name": "bakemorepies/laravel-smtp2go",
     "type": "library",
     "license": "MIT",
     "description": "Send emails via API using the first-class email courier SMTP2Go with dynamic email address generation and SSL certificate handling",
