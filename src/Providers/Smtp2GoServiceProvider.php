@@ -49,13 +49,6 @@ class Smtp2GoServiceProvider extends ServiceProvider
                     putenv("MAIL_FROM_ADDRESS={$dynamicFromAddress}");
                 }
                 $_ENV['MAIL_FROM_ADDRESS'] = $dynamicFromAddress;
-                
-                // Log the dynamic email address for debugging
-                \Log::info('Dynamic MAIL_FROM_ADDRESS set', [
-                    'app_url' => $appUrl,
-                    'subdomain' => $subdomain,
-                    'from_address' => $dynamicFromAddress
-                ]);
             } else {
                 // Fallback to a default if no valid subdomain is found
                 $fallbackAddress = 'noreply@bmpweb.dev';
@@ -64,11 +57,6 @@ class Smtp2GoServiceProvider extends ServiceProvider
                     putenv("MAIL_FROM_ADDRESS={$fallbackAddress}");
                 }
                 $_ENV['MAIL_FROM_ADDRESS'] = $fallbackAddress;
-                
-                \Log::warning('No valid subdomain found, using fallback MAIL_FROM_ADDRESS', [
-                    'app_url' => $appUrl,
-                    'fallback_address' => $fallbackAddress
-                ]);
             }
         }
     }
